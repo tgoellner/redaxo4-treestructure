@@ -1,0 +1,11 @@
+treestructure_root = Hauptebene
+treestructure_article_position = Position
+treestructure_set_item_to_bottom = Ans Ende setzen
+treestructure_set_item_before = Vor »{0}« einfügen
+treestructure_error = Allgemeiner Fehler
+treestructure_error_no_such_function = Die gewünschte Aktion ist nicht verfügbar.
+treestructure_del_cat_success = Die Kategorie »{0}« wurde gelöscht.
+treestructure_del_art_success = Die Artikel »{0}« wurde gelöscht.
+treestructure_notfoundarticle = Nicht-Gefunden-Artikel
+treestructure_sitestartarticle = Webseiten-Startartikel
+treestructure_metafields = weitere Angaben

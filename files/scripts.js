@@ -434,8 +434,8 @@
 		updateTable : function(data) {
 			if(data.func == 'edit_art' || data.func == 'edit_cat')
 			{
-				$('#rex-article-'+data.article.article_id).find('.article-name').text(data.article.name);
-				$('#rex-article-'+data.article.article_id).find('.article-template').text(data.article.template);
+				$('#rex-article-'+data.article.article_id).find('.article-name:first').text(data.article.name);
+				$('#rex-article-'+data.article.article_id).find('.article-template:first').text(data.article.template);
 			}
 			else if(typeof(data.structurehtml)=='string')
 			{

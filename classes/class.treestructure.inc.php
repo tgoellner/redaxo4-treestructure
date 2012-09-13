@@ -399,7 +399,7 @@ class treestructure {
       $this->initCategoryTemplates($cat['id']);
 
 
-      if ($this->hasCatPerm($cat['id']) && !$REX['USER']->hasPerm('editContentOnly[]'))
+      if ($this->hasCatPerm($cat['id']))
       {
         $actions[] = '<a class="rex-i-element rex-i-category-add" href="'.$this->getActionUrl($cat,'add_cat').'"'. rex_accesskey($I18N->msg('add_category'), $REX['ACKEY']['ADD']) .'><span class="rex-i-element-text">'.$I18N->msg("add_category").'</span></a>';
         $actions[] = '<a class="rex-i-element rex-i-article-add" href="'.$this->getActionUrl($cat,'add_art').'"'. rex_accesskey($I18N->msg('article_add'), $REX['ACKEY']['ADD_2']) .'><span class="rex-i-element-text">'. $I18N->msg('article_add') .'</span></a>';

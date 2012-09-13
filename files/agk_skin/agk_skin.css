@@ -29,9 +29,22 @@
  * */
 
 
+/* Hide the menu item in main menu */
+li#rex-navi-page-treestructure { display: none !important; }
+
+
 /* #############################################################################
    ## Basics
    ############################################################################# */
+#rex-treestructure {
+	background: #dfe9e9;
+	border: 1px solid #cbcbcb;
+	border-radius: 8px;
+}
+#rex-treestructure ul {
+	background: #eff9f9;
+
+}
 #rex-treestructure, #rex-treestructure ul {
 	list-style-type:		none;
 	list-style-position:	inside;
@@ -43,7 +56,11 @@
 	clear:				both;
 	float:				none;
 	padding:			0;
-	line-height:		3em;
+	line-height:	2em;
+}
+
+#rex-treestructure>ul {
+	border-bottom: 1px solid white;
 }
 #rex-treestructure li.collapsed>.rex-subcategories,
 #rex-treestructure li.collapsed>.rex-subarticles {
@@ -59,10 +76,13 @@
 	border-top:			1px solid transparent;
 	border-bottom:		1px solid transparent;
 }
+#rex-treestructure .sensitive-area {
+	border-bottom:		1px solid #fff;
+}
 #rex-treestructure .sensitive-area:hover {
-	background-color:	#eee;
-	border-top:			1px solid #fff;
-	border-bottom:		1px solid #999;
+	background-color:	#dfe9e9;
+	border-top:			1px solid #cbcbcb;
+	border-bottom:		1px solid #fff;
 }
 #rex-treestructure>li {
 	padding-left:		0;
@@ -74,8 +94,8 @@
 	z-index: 			80;
 }
 #rex-treestructure .article-name {
-	font-size:			1.2em;
-	color:				#666;
+	/*font-size:			1.2em;*/
+	color:				#2C8EC0;
 	vertical-align:		middle;
 }
 #rex-treestructure .rex-category-root>.sensitive-area .article-name {
@@ -108,7 +128,7 @@
 	margin-left:	1em;
 }
 #rex-treestructure .sensitive-area span.article-actions {
-	opacity:0;-moz-opacity:0;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";filter:alpha(opacity=0);
+	opacity:0.1;-moz-opacity:0.1;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0.1)";filter:alpha(opacity=0.1);
 
   -webkit-transition: all 0.3s ease-out;
      -moz-transition: all 0.3s ease-out;
@@ -132,7 +152,7 @@
 	overflow:		hidden;
 	white-space:	nowrap;
 	text-indent:	24px;
-	background:		url(./img/sprites.png) no-repeat 24px 24px transparent;
+	background:		url(sprites.png) no-repeat 24px 24px transparent;
 	vertical-align:		middle;
 }
 #rex-treestructure .article-buttons span, #rex-treestructure .article-actions span {
@@ -140,7 +160,7 @@
 }
 #rex-treestructure .rex-offline { background-position: 0 0 !important; }
 #rex-treestructure .rex-online { background-position: 0 -24px !important; }
-#rex-treestructure .rex-status.rex-loading { background: url(./img/loader.gif) no-repeat center !important; cursor: not-allowed; }
+#rex-treestructure .rex-status.rex-loading { background: url(loader.gif) no-repeat center !important; cursor: not-allowed; }
 
 #rex-treestructure .rex-delete { background-position: -120px 0 !important; }
 #rex-treestructure .rex-delete:hover { background-position: -120px -24px !important; }
@@ -177,7 +197,7 @@
 #rex-treestructure li.rex-category..rex-sitestart-article>.sensitive-area:hover>.article-icon { background-position: -408px -24px; }
 #rex-treestructure li.rex-article.rex-sitestart-article>.sensitive-area .article-icon { background-position: -432px -24px; margin-right: .5em; }
 #rex-treestructure li.rex-article.rex-sitestart-article>.sensitive-area:hover>.article-icon { background-position: -432px -24px; }
-#rex-treestructure li.rex-sitestart-article>.sensitive-area .article-name { color: #77b82a; font-weight: bold; }
+#rex-treestructure li.rex-sitestart-article>.sensitive-area .article-name { /*color: #77b82a;*/ font-weight: bold; }
 
 #rex-treestructure li.rex-category-root>.sensitive-area .article-icon { display: none }
 
@@ -233,7 +253,7 @@
 	left:		0;
 	width:		100%;
 	height:		100%;
-	background:	rgba(255,255,255,0.5) url(./img/loader.gif) center no-repeat;
+	background:	rgba(255,255,255,0.5) url(loader.gif) center no-repeat;
 }
 #dialogue-overlay {
 	position:			fixed;
@@ -246,7 +266,7 @@
 	font-size:			10px;
 }
 .ie8 #dialogue-overlay {
-	background:			url(./img/bg-alpha-black.png);
+	background:			url(bg-alpha-black.png);
 }
 
 #dialogue-div a.cancel {
@@ -255,7 +275,7 @@
 	right:				-10px;
 	width:				24px;
 	height:				24px;
-	background:			url(./img/sprites.png) no-repeat -336px 0 transparent;
+	background:			url(sprites.png) no-repeat -336px 0 transparent;
 	text-indent:		-100em;
 	overflow:			hidden;
 }
@@ -297,13 +317,7 @@
 
 #rex-treestructure .cnt, #dialogue-div .cnt {
 	margin: 0 5px;
-	padding-top:	.5em;
 }
-
-
-/* #############################################################################
-   ## Forms within the dialogue - especially the Metadata fields...
-   ############################################################################# */
 #dialogue-div .rex-form-field-wrapper .cnt .form-field {
 	border:		1px solid #666;
 	height:		2.4em;
@@ -316,110 +330,6 @@
 	width:		100%; height: 100%;
 	display:	block;
 	font-size:	1.2em;
-}
-#dialogue-div .cnt .rex-form-select-date .form-field {
-	text-align:	left;
-}
-#dialogue-div .cnt .rex-form-select-date .form-field select, #dialogue-div .cnt .rex-form-select-date .form-field input {
-	display: inline; display: -moz-inline-stack; display: inline-block; zoom: 1; *display:inline;
-	width:		auto;
-	height:		auto;
-	margin:		0 0 0 .5em;
-	border:		1px solid #ccc;
-	padding:	.5em;
-	font-size:	.9em;
-	vertical-align:		middle;
-}
-#dialogue-div .rex-form-field-wrapper p label, #dialogue-div .rex-form-field-wrapper .rex-form-widget label,
-#dialogue-div .rex-form-field-wrapper p.rex-form-label {
-	display: inline; display: -moz-inline-stack; display: inline-block; zoom: 1; *display:inline;
-	pading-top:		.25em;
-	width:			19.999%;
-	vertical-align:	top;
-	text-align:		left;
-	float:			none;
-	position:		relative;
-}
-#dialogue-div .rex-form-field-wrapper p .form-field, #dialogue-div .rex-form-field-wrapper .rex-form-widget .rex-widget,
-#dialogue-div .rex-form-radios-wrapper, #dialogue-div .rex-form-checkboxes-wrapper {
-	display: inline; display: -moz-inline-stack; display: inline-block; zoom: 1; *display:inline;
-	width:			74.999%;
-	vertical-align:	top;
-	float:			none;
-	position:		relative;
-	text-align:		left;
-}
-#dialogue-div .rex-form-field-wrapper p.rex-form-label { left: -.1em; }
-#dialogue-div .rex-form-radios-wrapper, #dialogue-div .rex-form-checkboxes-wrapper {
-	border:			1px solid #ccc;
-	padding:		.25em;
-}
-#dialogue-div div.rex-widget-medialist, #dialogue-div div.rex-widget-link, #dialogue-div div.rex-widget-linklist, #dialogue-div div.rex-widget-media {
-	position:	relative;
-}
-#dialogue-div p.rex-widget-field {
-	position:	relative;
-	width:	auto !important;
-	float:	none !important;
-	margin-right:	40px;
-	border:	1px solid #ccc;
-}
-#dialogue-div p.rex-widget-icons {
-	position:	absolute;
-	width:		40px;
-	top:		0;
-	right:		0;
-}
-#dialogue-div .rex-widget-media p.rex-widget-icons {
-	width:		80px;
-}
-#dialogue-div div.rex-widget-link p.rex-widget-icons,
-#dialogue-div div.rex-widget-media p.rex-widget-icons,
-#dialogue-div div.rex-widget-medialist p.rex-widget-icons { top: 3px; padding-top: 0; }
-#dialogue-div div.rex-widget-media p.rex-widget-field { margin-right: 80px; }
-
-#dialogue-div .rex-widget-field {
-	margin: 		0;
-	padding-left: 	5px;
-	border: 		none;
-}
-#dialogue-div div.rex-widget-medialist .rex-widget-field,
-#dialogue-div div.rex-widget-linklist .rex-widget-field{
-	padding:	0;
-}
-#dialogue-div .rex-widget-field input,
-#dialogue-div .rex-widget-field select {
-	width: 100%;
-	margin: 0;
-	padding: 0;
-	border: 0;
-	background: transparent;
-}
-#dialogue-div #rex-cat-form-add {
-	clear:			both;
-	padding-top:	.5em;
-}
-#dialogue-div .collapse-headline {
-	margin:		0 5px;
-	font-weight:	bold;
-	background: 	#ddd;
-	color:			#fff;
-	cursor:			pointer;
-	text-align:		left;
-	padding:		.5em;
-}
-#dialogue-div .collapse-headline:hover {
-	background: 	#77b82a;
-}
-
-#dialogue-div .collapsed {
-	display:	none;
-}
-#dialogue-div .rex-form-legend {
-	background:		#ddd;
-	padding:		.5em;
-	text-align:		left;
-	margin: 		0 .5em;
 }
 #dialogue-div .rex-submit-wrapper {
 	padding:	1em 0;
@@ -486,7 +396,7 @@
 	display:	block;
 	position:	fixed;
 	z-index:	99;
-	background:	url(./img/loader.gif) no-repeat center;
+	background:	url(loader.gif) no-repeat center;
 	background-color:	rgba(240,240,240,.6);
 	top:		0;
 	left:		0;
@@ -514,7 +424,8 @@
 	cursor: not-allowed !important;
 }
 li#rex-article-0 {
-	padding-bottom:	50px;
+	padding-bottom:	10px;
+	    line-height: 2em;
 }
 .ui-draggable-dragging {
 	cursor: move;

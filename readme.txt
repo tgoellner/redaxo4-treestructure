@@ -3,7 +3,7 @@ REDAXO TreeStructure PlugIn for Redaxo 4.3 / 4.4
 post@thomasgoellner.de / Thomas Göllner
 www.thomasgoellner.de
 
-Version: 1.0.1 (2012/08/16)
+Version: 1.0.2 (2012/09/13)
 
 
 If you experience performance problems with large sitemap you can either disable
@@ -50,6 +50,18 @@ To attach the icon to any category with the template 3 use:
 
 CHANGELOG
 -------------------------------------------------
+1.0.2 (2012/09/13):
+
+_ Template changes to categories did not save - this is fixed
+
+_ When changing a category name the new names was displayed for all child categories
+
+_ BE Search addon is now disabled in treestructure view - can be enabled by setting the variable
+$REX['ADDON']['treestructure']['allow_besearch_in_sructure'] in config.inc.php
+
+_ merged with git commit by jdlx
+
+
 1.0.1 (2012/08/16):
 
 _ The AddOn page is hidden from the menu

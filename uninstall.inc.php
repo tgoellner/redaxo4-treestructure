@@ -7,14 +7,14 @@
  *
  *
  * @package redaxo4
- * @version 1.0.1
+ * @version 1.0.2
  */
 
 $error = '';
 
 if ($error != '')
-	$REX['ADDON']['installmsg']['treestructure'] = $error;
+  $REX['ADDON']['installmsg']['treestructure'] = $error;
 else
-	$REX['ADDON']['install']['treestructure'] = 0;
+  $REX['ADDON']['install']['treestructure'] = 0;
 
 ?>

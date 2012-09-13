@@ -9,3 +9,6 @@ treestructure_del_art_success = Article »{0}« has been deleted.
 treestructure_notfoundarticle = Not found article
 treestructure_sitestartarticle = Website start article
 treestructure_metafields = Metafields
+treestructure_article_id = (ID: {0})
+treestructure_article_time = (Date: {0})
+

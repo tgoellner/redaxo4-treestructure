@@ -1,0 +1,553 @@
+@charset "UTF-8";
+/**
+ * REDAXO TreeStructure PlugIn
+ *
+ * @author post[at]thomasgoellner[dot]de Thomas Göllner
+ * @author <a href="http://www.thomasgoellner.de">www.thomasgoellner.de</a>
+ *
+ *
+ * @package redaxo4
+ * @version 1.0.2
+ *
+ * Colors..............
+ * hilite (light):		#e7f5d3
+ * hilite (normal):	#77b82a
+ * error:				#aa0000
+ * bgcolor:			#eee
+ *
+ *
+ * You can use your own icons for elements with specific template ids.
+ * For example: You want any article with the template ID 3 to
+ * show the icon 'my_icon.gif':
+ *
+ * #rex-treestructure li.rex-article.rex-template-id-3 .sensitive-area>.article-icon,
+ * #rex-treestructure li.rex-article.rex-template-id-3 .sensitive-area:hover>.article-icon { background: url(my_icon.gif) no-repeat center !important; }
+ *
+ * To attach the icon to any category with the template 3 use:
+ * #rex-treestructure li.rex-category.rex-template-id-3 .sensitive-area>.article-icon, #rex-treestructure li.rex-category.rex-template-id-3 .sensitive-area:hover>.article-icon { background: url(my_icon.gif) no-repeat center !important; }
+ *
+ * */
+
+
+/* #############################################################################
+   ## Basics
+   ############################################################################# */
+#rex-treestructure, #rex-treestructure ul {
+	list-style-type:		none;
+	list-style-position:	inside;
+}
+
+#rex-treestructure li {
+	position:			relative;
+	display:			block;
+	clear:				both;
+	float:				none;
+	padding:			0;
+	line-height:		3em;
+}
+#rex-treestructure li.collapsed>.rex-subcategories,
+#rex-treestructure li.collapsed>.rex-subarticles {
+	display:			none;
+}
+
+#rex-treestructure .sensitive-area {
+	position:			relative;
+	display:			block;
+	clear:				both;
+	padding:			0 0 0 24px;
+	margin:				0;
+	border-top:			1px solid transparent;
+	border-bottom:		1px solid transparent;
+}
+#rex-treestructure .sensitive-area:hover {
+	background-color:	#eee;
+	border-top:			1px solid #fff;
+	border-bottom:		1px solid #999;
+}
+#rex-treestructure>li {
+	padding-left:		0;
+}
+
+#rex-treestructure .article-link {
+	padding-right:		3em;
+	vertical-align:		middle;
+	z-index: 			80;
+}
+#rex-treestructure .article-name {
+	display: inline; display:-moz-inline-stack; display:inline-block; zoom:1; *display:inline;
+	font-size:			1.2em;
+	color:				#666;
+	vertical-align:		middle;
+	max-width:			35%;
+	white-space:		nowrap;
+	overflow:			hidden;
+	text-overflow:		ellipsis;
+}
+#rex-treestructure .rex-category-root>.sensitive-area .article-name {
+	color:				#999;
+	font-weight:		bold;
+}
+#rex-treestructure .article-id,
+#rex-treestructure .article-time {
+	color:				#ccc;
+	margin-left:		.25em;
+	vertical-align:		middle;
+}
+#rex-treestructure .sensitive-area:hover .article-id,
+#rex-treestructure .sensitive-area:hover .article-time {
+	color:				#333;
+}
+#rex-treestructure .article-time {
+	float:	right;
+}
+#rex-treestructure .rex-subarticles .article-time {
+	margin-right:		48px;
+}
+#rex-treestructure .article-template {
+	display: inline; display:-moz-inline-stack; display:inline-block; zoom:1; *display:inline;
+	color:				#999;
+	margin-left:		1em;
+	vertical-align:		middle;
+	visibility:			hidden;
+	max-width:			10%;
+	white-space:		nowrap;
+	overflow:			hidden;
+	text-overflow:		ellipsis;
+}
+#rex-treestructure .sensitive-area:hover .article-template {
+	visibility:			visible;
+}
+
+#rex-treestructure a {
+	text-decoration:	none !important;
+}
+
+#rex-treestructure span.article-actions,
+#rex-treestructure span.article-buttons {
+	display:		block;
+	float:			right;
+	margin-left:	1em;
+}
+#rex-treestructure .sensitive-area span.article-actions {
+	opacity:0;-moz-opacity:0;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";filter:alpha(opacity=0);
+
+  -webkit-transition: all 0.3s ease-out;
+     -moz-transition: all 0.3s ease-out;
+      -ms-transition: all 0.3s ease-out;
+       -o-transition: all 0.3s ease-out;
+          transition: all 0.3s ease-out;
+}
+#rex-treestructure .sensitive-area:hover>span.article-actions {
+	opacity:1;-moz-opacity:1;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";filter:alpha(opacity=100);
+}
+
+
+
+#rex-treestructure span.article-actions a, #rex-treestructure span.article-actions span,
+#rex-treestructure span.article-buttons a, #rex-treestructure span.article-buttons span,
+#rex-treestructure .article-icon,
+#rex-treestructure .rex-collapse {
+	display: inline; display:-moz-inline-stack; display:inline-block; zoom:1; *display:inline;
+	width:			24px;
+	height:			24px;
+	overflow:		hidden;
+	white-space:	nowrap;
+	text-indent:	24px;
+	background:		url(./img/sprites.png) no-repeat 24px 24px transparent;
+	vertical-align:		middle;
+}
+#rex-treestructure .article-buttons span, #rex-treestructure .article-actions span {
+	opacity:.2;-moz-opacity:.2;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";filter:alpha(opacity=20)
+}
+#rex-treestructure .rex-offline { background-position: 0 0 !important; }
+#rex-treestructure .rex-online { background-position: 0 -24px !important; }
+#rex-treestructure .rex-status.rex-loading { background: url(./img/loader.gif) no-repeat center !important; cursor: not-allowed; }
+
+#rex-treestructure .rex-delete { background-position: -120px 0 !important; }
+#rex-treestructure .rex-delete:hover { background-position: -120px -24px !important; }
+
+#rex-treestructure .rex-edit { background-position: -144px 0 !important; }
+#rex-treestructure .rex-edit:hover { background-position: -144px -24px !important; }
+
+#rex-treestructure .rex-i-category-add { background-position: -48px 0 !important; }
+#rex-treestructure .rex-i-category-add:hover { background-position: -48px -24px !important; }
+
+#rex-treestructure .rex-i-article-add { background-position: -24px 0 !important; }
+#rex-treestructure .rex-i-article-add:hover { background-position: -24px -24px !important; }
+
+#rex-treestructure .rex-view { background-position: -240px 0 !important; }
+#rex-treestructure .rex-view:hover { background-position: -240px -24px !important; }
+
+#rex-treestructure .rex-metadata { background-position: -72px 0 !important; }
+#rex-treestructure .rex-metadata:hover { background-position: -72px -24px !important; }
+
+#rex-treestructure .rex-actions { background-position: -96px 0 !important; }
+#rex-treestructure .rex-actions:hover { background-position: -96px -24px !important; }
+
+#rex-treestructure li.rex-category .article-icon { background-position: -216px 0; margin-right: .5em; }
+#rex-treestructure li.rex-category .sensitive-area:hover>.article-icon { background-position: -216px -24px; }
+#rex-treestructure li.rex-article .article-icon { background-position: -192px 0; margin-right: .5em; }
+#rex-treestructure li.rex-article .sensitive-area:hover>.article-icon { background-position: -192px -24px; }
+
+#rex-treestructure li.rex-category.rex-notfound-article>.sensitive-area .article-icon { background-position: -456px 0px; margin-right: .5em; }
+#rex-treestructure li.rex-category..rex-notfound-article>.sensitive-area:hover>.article-icon { background-position: -456px -24px; }
+#rex-treestructure li.rex-article.rex-notfound-article>.sensitive-area .article-icon { background-position: -480px 0px; margin-right: .5em; }
+#rex-treestructure li.rex-article.rex-notfound-article>.sensitive-area:hover>.article-icon { background-position: -480px -24px; }
+
+#rex-treestructure li.rex-category.rex-sitestart-article>.sensitive-area .article-icon { background-position: -408px -24px; margin-right: .5em; }
+#rex-treestructure li.rex-category..rex-sitestart-article>.sensitive-area:hover>.article-icon { background-position: -408px -24px; }
+#rex-treestructure li.rex-article.rex-sitestart-article>.sensitive-area .article-icon { background-position: -432px -24px; margin-right: .5em; }
+#rex-treestructure li.rex-article.rex-sitestart-article>.sensitive-area:hover>.article-icon { background-position: -432px -24px; }
+#rex-treestructure li.rex-sitestart-article>.sensitive-area .article-name { color: #77b82a; font-weight: bold; }
+
+#rex-treestructure li.rex-category-root>.sensitive-area .article-icon { display: none }
+
+#rex-treestructure .rex-collapse {
+	position:				absolute;
+	display:				block;
+	top:					50%;
+	left:					0;
+	margin-top:				-12px;
+	background-position: 	-264px 0;
+	cursor:					pointer;
+}
+#rex-treestructure li.collapsed>.sensitive-area .rex-collapse {
+	background-position: 	-288px 0;
+}
+#rex-treestructure li.new-added-item>.sensitive-area {
+	background-color: #e7f5d3;
+}
+
+
+/* #############################################################################
+   ## Dialogues
+   ############################################################################# */
+.dialogue-div {
+	display:			none;
+}
+#dialogue-div {
+	position:			fixed;
+	top:				50%;
+	left:				50%;
+	width:				600px;
+	height:				400px;
+	margin-left:		-310px;
+	margin-top:			-210px;
+	padding:			10px;
+	color:				#333;
+	text-align:			center;
+	font-size:			1.2em;
+	line-height:		1.2em;
+	background:			#fff;
+
+	-o-border-radius: 		10px;
+	-moz-border-radius: 	10px;
+	-webkit-border-radius:	10px;
+	border-radius: 			10px;
+}
+#dialogue-div #dialogue-content {
+}
+#dialogue-div #dialogue-loading {
+	position:	absolute;
+	display:	block;
+	top:		0;
+	left:		0;
+	width:		100%;
+	height:		100%;
+	background:	rgba(255,255,255,0.5) url(./img/loader.gif) center no-repeat;
+}
+#dialogue-overlay {
+	position:			fixed;
+	top:				0;
+	left:				0;
+	width:				100%;
+	height:				100%;
+	background-color:	rgba(0,0,0,0.5);
+	z-index:			999;
+	font-size:			10px;
+}
+.ie8 #dialogue-overlay {
+	background:			url(./img/bg-alpha-black.png);
+}
+
+#dialogue-div a.cancel {
+	position:			absolute;
+	top:				-10px;
+	right:				-10px;
+	width:				24px;
+	height:				24px;
+	background:			url(./img/sprites.png) no-repeat -336px 0 transparent;
+	text-indent:		-100em;
+	overflow:			hidden;
+}
+#dialogue-div legend {
+	display:		block;
+	width:			100%;
+	color:			#333;
+	line-height:	1em;
+	font-size:		1.2em;
+	text-transform:	uppercase;
+	padding:		0;
+	border:			none;
+	text-shadow: 	0 1px 1px rgba(255,255,255,1);
+	border-bottom:	1px solid #ccc;
+	padding-bottom:	.5em;
+	margin-bottom:	.5em;
+}
+#dialogue-div label {
+	display:		block;
+	margin-bottom:	.5em;
+}
+
+.a-col20, .a-col30, .a-col33, .a-col40, .a-col50, .a-col60, .a-col66, .a-col70, .a-col80 {
+	display:	block;
+	float:		left;
+	text-align:	left;
+}
+.a-col20 { width: 19.999%; }
+.a-col30 { width: 29.999%; }
+.a-col33 { width: 33.333%; }
+.a-col40 { width: 39.999%; }
+.a-col50 { width: 49.999%; }
+.a-col60 { width: 59.999%; }
+.a-col66 { width: 66.666%; }
+.a-col70 { width: 69.999%; }
+.a-col80 { width: 79.999%; }
+
+.a-col100 { clear: both; float: none; width: 100%; }
+
+#rex-treestructure .cnt, #dialogue-div .cnt {
+	margin: 0 5px;
+	padding-top:	.5em;
+}
+
+
+/* #############################################################################
+   ## Forms within the dialogue - especially the Metadata fields...
+   ############################################################################# */
+#dialogue-div .rex-form-field-wrapper .cnt .form-field {
+	border:		1px solid #666;
+	height:		2.4em;
+	padding:	.25em;
+}
+#dialogue-div .cnt .form-field input, #dialogue-div .cnt .form-field select, #dialogue-div .cnt .form-field textarea {
+	border:		0;
+	padding:	0;
+	margin:		0;
+	width:		100%; height: 100%;
+	display:	block;
+	font-size:	1.2em;
+}
+#dialogue-div .cnt .rex-form-select-date .form-field {
+	text-align:	left;
+}
+#dialogue-div .cnt .rex-form-select-date .form-field select, #dialogue-div .cnt .rex-form-select-date .form-field input {
+	display: inline; display: -moz-inline-stack; display: inline-block; zoom: 1; *display:inline;
+	width:		auto;
+	height:		auto;
+	margin:		0 0 0 .5em;
+	border:		1px solid #ccc;
+	padding:	.5em;
+	font-size:	.9em;
+	vertical-align:		middle;
+}
+#dialogue-div .rex-form-field-wrapper p label, #dialogue-div .rex-form-field-wrapper .rex-form-widget label,
+#dialogue-div .rex-form-field-wrapper p.rex-form-label {
+	display: inline; display: -moz-inline-stack; display: inline-block; zoom: 1; *display:inline;
+	pading-top:		.25em;
+	width:			19.999%;
+	vertical-align:	top;
+	text-align:		left;
+	float:			none;
+	position:		relative;
+}
+#dialogue-div .rex-form-field-wrapper p .form-field, #dialogue-div .rex-form-field-wrapper .rex-form-widget .rex-widget,
+#dialogue-div .rex-form-radios-wrapper, #dialogue-div .rex-form-checkboxes-wrapper {
+	display: inline; display: -moz-inline-stack; display: inline-block; zoom: 1; *display:inline;
+	width:			74.999%;
+	vertical-align:	top;
+	float:			none;
+	position:		relative;
+	text-align:		left;
+}
+#dialogue-div .rex-form-field-wrapper p.rex-form-label { left: -.1em; }
+#dialogue-div .rex-form-radios-wrapper, #dialogue-div .rex-form-checkboxes-wrapper {
+	border:			1px solid #ccc;
+	padding:		.25em;
+}
+#dialogue-div div.rex-widget-medialist, #dialogue-div div.rex-widget-link, #dialogue-div div.rex-widget-linklist, #dialogue-div div.rex-widget-media {
+	position:	relative;
+}
+#dialogue-div p.rex-widget-field {
+	position:	relative;
+	width:	auto !important;
+	float:	none !important;
+	margin-right:	40px;
+	border:	1px solid #ccc;
+}
+#dialogue-div p.rex-widget-icons {
+	position:	absolute;
+	width:		40px;
+	top:		0;
+	right:		0;
+}
+#dialogue-div .rex-widget-media p.rex-widget-icons {
+	width:		80px;
+}
+#dialogue-div div.rex-widget-link p.rex-widget-icons,
+#dialogue-div div.rex-widget-media p.rex-widget-icons,
+#dialogue-div div.rex-widget-medialist p.rex-widget-icons { top: 3px; padding-top: 0; }
+#dialogue-div div.rex-widget-media p.rex-widget-field { margin-right: 80px; }
+
+#dialogue-div .rex-widget-field {
+	margin: 		0;
+	padding-left: 	5px;
+	border: 		none;
+}
+#dialogue-div div.rex-widget-medialist .rex-widget-field,
+#dialogue-div div.rex-widget-linklist .rex-widget-field{
+	padding:	0;
+}
+#dialogue-div .rex-widget-field input,
+#dialogue-div .rex-widget-field select {
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background: transparent;
+}
+#dialogue-div #rex-cat-form-add {
+	clear:			both;
+	padding-top:	.5em;
+}
+#dialogue-div .collapse-headline {
+	margin:		0 5px;
+	font-weight:	bold;
+	background: 	#ddd;
+	color:			#fff;
+	cursor:			pointer;
+	text-align:		left;
+	padding:		.5em;
+}
+#dialogue-div .collapse-headline:hover {
+	background: 	#77b82a;
+}
+
+#dialogue-div .collapsed {
+	display:	none;
+}
+#dialogue-div .rex-form-legend {
+	background:		#ddd;
+	padding:		.5em;
+	text-align:		left;
+	margin: 		0 .5em;
+}
+#dialogue-div .rex-submit-wrapper {
+	padding:	1em 0;
+}
+#dialogue-div button {
+	display: inline; display: -moz-inline-stack; display: inline-block; zoom: 1; *display:inline;
+	border:					0;
+	padding:				0 .5em;
+	margin:					0;
+	background:				#77b82a;
+	color:					#fff;
+	font-weight:			bold;
+	line-height:			1.8em;
+	vertical-align: 		middle;
+
+	text-shadow: 		0 1px 1px rgba(0,0,0,0.3);
+	cursor:				pointer;
+
+	-o-box-shadow: 		0 2px 3px rgba(0,0,0,0.2);
+	-moz-box-shadow: 	0 2px 3px rgba(0,0,0,0.2);
+	-webkit-box-shadow:	0 2px 3px rgba(0,0,0,0.2);
+	box-shadow: 		0 2px 3px rgba(0,0,0,0.2);
+
+	-o-border-radius: 		1em;
+	-moz-border-radius: 	1em;
+	-webkit-border-radius:  1em;
+	border-radius: 			1em;
+
+	font-size:	1.6em;
+	padding-left:	3em;
+	padding-right:	3em;
+}
+#rex-page-treestructure input, #rex-page-treestructure textarea, #rex-page-treestructure select {
+	border:					1px solid #ccc;
+	padding:				.25em .5em;
+	background:				#fff;
+	color:					#666;
+}
+#rex-page-treestructure select {
+	padding-right:	2px;
+}
+#rex-page-treestructure textarea { resize: none; }
+
+
+#dialogue-div div.rex-message {
+	margin: 0;
+	font-weight: bold;
+}
+#dialogue-div div.rex-message .rex-info, #dialogue-div div.rex-message .rex-warning {
+	padding: 0;
+}
+#dialogue-div .rex-info,
+#dialogue-div div.rex-info-block,
+#dialogue-div div.rex-info-block a {
+	background: none;
+	color:		#77b82a;
+	font-size:	1.2em;
+}
+
+/* #############################################################################
+   ## Loader
+   ############################################################################# */
+#loading {
+	display:	block;
+	position:	fixed;
+	z-index:	99;
+	background:	url(./img/loader.gif) no-repeat center;
+	background-color:	rgba(240,240,240,.6);
+	top:		0;
+	left:		0;
+	width:		100%;
+	height:		100%;
+}
+
+/* #############################################################################
+   ## Drag & Drop
+   ############################################################################# */
+.sensitive-area.ui-state-active {
+	background:	#e7f5d3;
+}
+.ui-dropper-inbetween {
+	position:	relative;
+	display:	block;
+	height:		5px;
+	background:	transparent;
+}
+.ui-dropper-inbetween.ui-state-active {
+	background:	#77b82a;
+}
+.ui-state-invalid {
+	background:	transparent;
+	cursor: not-allowed !important;
+}
+li#rex-article-0 {
+	padding-bottom:	50px;
+}
+.ui-draggable-dragging {
+	cursor: move;
+	z-index: 90;
+}
+.rex-category>.ui-state-active>.article-icon {
+	background-position: -360px -24px !important;
+}
+.ui-draggable-dragging .article-buttons, .ui-draggable-dragging .article-actions { display: none !important; }
+.ui-draggable-dragging.ui-state-invalid .article-icon {
+	background-position: -336px -24px !important;
+}
+.ui-draggable-dragging.ui-state-active .article-icon {
+	background-position: -384px -24px !important;
+}

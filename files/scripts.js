@@ -6,7 +6,7 @@
  *
  *
  * @package redaxo4
- * @version 1.0.2
+ * @version 1.0.3
  */
 
 (function($){
@@ -596,11 +596,17 @@
 							$('#dialogue-loading').animate({opacity:0},200,function(){ $(this).remove(); });
 
 							// insert the returned data to the dialogue
-							treeStructure.dialogues.show(data.html);
 							treeStructure.updateTable(data);
 
-							if(typeof(data.autohide)!='undefined')
-								window.setTimeout(function() { treeStructure.dialogues.hide(); }, 1000);
+							if(data.html!='') {
+								treeStructure.dialogues.show(data.html);
+
+								if(typeof(data.autohide)!='undefined')
+									window.setTimeout(function() { treeStructure.dialogues.hide(); }, 1000);
+							}
+							else if(typeof(data.autohide)!='undefined')
+								treeStructure.dialogues.hide();
+
 							// hide the loader div
 						},
 						'json');
@@ -615,8 +621,8 @@
 
 				$(cancel_btn).bind('click touchend',{onCancel: onCancel}, function(e){
 					try { $(window).unbind('keyup', this.addKeys); } catch(e) { };
-					if(event.preventDefault) event.preventDefault();
-					else event.returnValue = false;
+					if(e.preventDefault) e.preventDefault();
+					else e.returnValue = false;
 					treeStructure.dialogues.hide(onCancel);
 				});
 
@@ -629,8 +635,8 @@
 						confirm_btn = $('<a href="javascript:void(0)" class="btn confirm">Confirm</a>').appendTo($('#dialogue-div'));
 
 					$(confirm_btn).bind('click touchend',{onConfirm: onConfirm}, function(e){
-						if(event.preventDefault) event.preventDefault();
-						else event.returnValue = false;
+						if(e.preventDefault) e.preventDefault();
+						else e.returnValue = false;
 						treeStructure.dialogues.hide(onConfirm);
 					});
 				}

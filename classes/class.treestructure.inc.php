@@ -7,7 +7,7 @@
  *
  *
  * @package redaxo4
- * @version 1.0.2
+ * @version 1.0.3
  */
 
 class treestructure {
@@ -925,8 +925,11 @@ class treestructure {
       if(isset($data['category_id']))
         $data['category_id']   = _rex_cast_var($data['category_id'], 'rex-category-id', false, '');
 
-      if(isset($data['path']))
-        $data['path']          = _rex_cast_var($data['path'], 'string', '', '');
+		if(substr($func,0,5)!='move_' && !empty($data['article_id']) && !empty($data['clang']) && is_object($art = OOArticle::getArticleById($data['article_id'],$data['clang']))) {
+			$data['path'] = $art->getValue('path');
+		}
+		elseif(isset($data['path']))
+			$data['path'] = _rex_cast_var($data['path'], 'string', '', '');
     }
 
     global $REX;
@@ -953,7 +956,6 @@ class treestructure {
 
         break;
       case 'edit_cat' : // edit a category
-
         $data['category_id'] = $data['article_id'];
         $data['catprior'] = $data['prior'];
         // unset($data['prior']);
@@ -1017,6 +1019,14 @@ class treestructure {
 
           if($success)
           {
+			if($func=='add_cat') {
+				// category added - update the template
+				$data['template'] = $this->getTemplateName($data['category_id'],$data['template_id']);
+				$data['template'] = stripslashes($data['template']);
+
+				rex_editArticle($obj->getId(), $obj->getClang(), $data);
+			}
+
             # $this->info = $message;
             rex_generateArticle($obj->getId());
             // rex_generateAll();
@@ -1357,24 +1367,30 @@ class treestructure {
     );
 
     if(is_object($art = OOArticle::getArticleById($article['id'],$article['clang']))) {
-      $article['template_id']  = $art->getValue('template_id');
-      if($art->isStartPage()) {
-        $article['path']     = $art->getValue('path'); // .$article['id'].'|';
-        $article['category_id'] = $art->getId();
-        $article['prior']     = $art->getValue('catprior');
-        $article['name']     = $art->getValue('catname');
-      }
-      else {
-        $article['name']     = $art->getName();
-        $article['prior']     = $art->getPriority();
-      }
+		$article['template_id']  = $art->getValue('template_id');
+		if($art->isStartPage()) {
+			$article['path']     = $art->getValue('path'); //.$article['id'].'|';
+			$article['category_id'] = $art->getId();
+			$article['prior']     = $art->getValue('catprior');
+			$article['name']     = $art->getValue('catname');
+		}
+		else {
+			$article['name']     = $art->getName();
+			$article['prior']     = $art->getPriority();
+		}
     }
 
     $children = null;
     if(substr($func,0,4)=='add_')
     {
       $article['name'] = '';
+	  if(!empty($article['id']))
+		$article['path'].=$article['id'].'|';
+
       $article['id'] = 0;
+
+	  if(empty($article['template_id']))
+		$article['template_id'] = $REX['DEFAULT_TEMPLATE_ID'];
 
       if(strpos($func,'_cat'))
         $children = OOCategory::getChildrenById($article['category_id']);

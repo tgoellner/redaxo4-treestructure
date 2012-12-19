@@ -7,7 +7,7 @@
  *
  *
  * @package redaxo4
- * @version 1.0.2
+ * @version 1.0.3
  */
   if(file_exists($file = $REX['INCLUDE_PATH'].'/addons/treestructure/classes/class.treestructure.inc.php'))
   {

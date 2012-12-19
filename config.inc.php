@@ -7,7 +7,7 @@
  *
  *
  * @package redaxo4
- * @version 1.0.2
+ * @version 1.0.3
  */
 
 
@@ -21,7 +21,7 @@ $REX['PERM'][] = 'treestructure[]';
 // set this variable to keep a good performance on your site -
 // if the structure contains more items than this setting
 // the addon will show the default structure page
-$REX['ADDON']['treestructure']['maxitems'] = 500;
+$REX['ADDON']['treestructure']['maxitems'] = 400;
 $REX['ADDON']['treestructure']['allow_besearch_in_sructure'] = false;
 
 

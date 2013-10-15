@@ -7,7 +7,7 @@
  *
  *
  * @package redaxo4
- * @version 1.0.3
+ * @version 1.1
  *
  * Colors..............
  * hilite (light):		#e7f5d3
@@ -551,3 +551,58 @@ li#rex-article-0 {
 .ui-draggable-dragging.ui-state-active .article-icon {
 	background-position: -384px -24px !important;
 }
+
+
+#rex-treestructure-quickjump {
+	background:	url(./img/bg_header.png) repeat-x left bottom #f1f1f1;
+	padding:	1em;
+	color:		#fff;
+
+	-o-box-shadow: 		0 1px 5px rgba(0,0,0,0.4);
+	-moz-box-shadow: 	0 1px 5px rgba(0,0,0,0.4);
+	-webkit-box-shadow:	0 1px 5px rgba(0,0,0,0.4);
+	box-shadow: 		0 1px 5px rgba(0,0,0,0.4);
+
+	font-size:		1.2em;
+}
+#rex-treestructure-quickjump .title {
+	color:			#999;
+	line-height:	1em;
+	text-transform:	uppercase;
+	font-weight:	bold;
+	padding:		0;
+	margin:			0 5px;
+	border:			none;
+	text-shadow: 	0 1px 1px rgba(255,255,255,1);
+}
+#rex-treestructure-quickjump ul {
+	display:		block;
+	list-style-type: none;
+}
+#rex-treestructure-quickjump ul li {
+	width:			49.999%;
+}
+#rex-treestructure-quickjump.two-rows ul li {
+	float:			left;
+}
+#rex-treestructure-quickjump ul a {
+	display: 				block;
+	margin:					5px;
+	background:				#999 !important;
+	line-height:			1em;
+	vertical-align:			middle;
+	padding:				.2em .5em .3em .5em !important;
+	line-height:			1.4em;
+	color:					#fff !important;
+	font-weight:			normal;
+	text-decoration:		none !important;
+
+	-o-border-radius: 		.5em;
+	-moz-border-radius: 	.5em;
+	-webkit-border-radius:	.5em;
+	border-radius: 			.5em;
+}
+#rex-treestructure-quickjump ul a:hover {
+	background-color:		#77B82A !important;
+}
+

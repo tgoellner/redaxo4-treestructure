@@ -7,7 +7,7 @@
  *
  *
  * @package redaxo4
- * @version 1.0.3
+ * @version 1.1
  */
 
 class treestructure {
@@ -291,10 +291,83 @@ class treestructure {
     return $actions_allowed;
   }
 
+  public function getQuickJumpPages() {
+    global $REX;
+
+    if(file_exists($file = $REX['INCLUDE_PATH'].'/addons/treestructure/quickjump.txt')) {
+      $data = file_get_contents($file);
+      $data = explode("\n",$data);
+      $pages = array();
+      foreach($data as $line) {
+        $line = trim($line);
+        if(!empty($line)) {
+          $line = explode(',',$line);
+          $options = array();
+          foreach($line as $option) {
+            if(($p = strpos($option,':'))!==false) {
+              $key = trim(substr($option,0,$p));
+              $value = trim(substr($option,$p+1));
+              if(!empty($key) && !empty($value)) {
+                $options[$key] = SREX_Helper::t($value);
+              }
+            }
+          }
+          if(!empty($options['page'])) {
+            $allowed = false;
+            if($REX['USER']->isAdmin())
+              $allowed = true;
+            else if($options['page']=='content' && !empty($options['article_id'])) {
+              $clang = !empty($options['clang']) ? $options['clang'] : $REX['CUR_CLANG'];
+              if(is_object($art = OOArticle::getArticleById($options['article_id'],$clang))) {
+                $catid = $art->isStartArticle() ? $art->getId() : $art->getCategoryId();
+                if($this->hasCatPerm(catid, $clang)) {
+                  if(!empty($options['mode']) && $REX['USER']->hasPerm('editContentOnly[]')) {
+                  }
+                  else {
+                    $allowed = true;
+                    if(empty($options['title']))
+                      $options['title'] = $art->getName();
+                  }
+                }                  
+              }
+              unset($clang,$art,$catid);
+            }
+            else if($REX['USER']->hasPerm($options['page'].'['.(!empty($options['plugin']) ? $options['plugin'] : '').']')) {
+              $allowed = true;
+            }
+
+            if($allowed) {
+              $title = !empty($options['title']) ? $options['title'] : $options['page'];
+              unset($options['title']);
+              $url = 'index.php?'.http_build_query($options);
+              $pages[$url] = $title;
+            }
+          }
+        }
+      }
+    }
+    unset($data,$line,$options,$p,$option,$key,$value,$allowed,$title,$url);
+      
+    if(!empty($pages)) {
+      $tmp = '<div id="rex-treestructure-quickjump"'.(count($pages)>6 ? ' class="two-rows"' : '').'><p class="title">Schnell-Start-Menü:</p><ul class="cf">';
+      foreach($pages as $url => $name)
+        $tmp.='<li><a href="'.$url.'">'.$name.'</a></li>';
+      $tmp.='</ul></div>';
+      unset($url,$name);
+
+      return $tmp;
+    }
+    return null;
+  }
+
   public function outputPage() {
     global $REX;
     if(!$this->initialized)
       $this->init();
+
+    if($tmp = $this->getQuickJumpPages()) {
+      $this->OUT.= $tmp;
+    }
 
     if(!empty($this->warning))
       $this->OUT.= rex_warning($this->warning);
@@ -1061,7 +1134,8 @@ class treestructure {
           $valid  = false;
           $move   = false;
           $type  = $source->isStartArticle() ? 'category' : 'article';
-
+          $reorderdata = null;
+          
           if(intval($data['dest_cat'])===0)
           {
             $valid = true;
@@ -1098,9 +1172,30 @@ class treestructure {
             {
               if($REX['USER']->isAdmin() || ($REX['USER']->hasPerm('moveArticle[]') && $REX['USER']->hasCategoryPerm($data['dest_cat'])))
               {
-                if (rex_moveArticle($source->getId(), $source->getCategoryId(), $data['dest_cat']))
+                // just move?
+                
+                if($source->getCategoryId() == $data['dest_cat']) {
+                  $reorderdata = array(
+                    'prior' => $data['dest_after']==0 ? 1 : ((int) OOArticle::getArticleById($data['dest_after'],$data['clang'])->getValue('prior'))+1,
+                    'name' => $source->getValue('name'),
+                    'template_id' => $source->getValue('template_id'),
+                    'category_id' => $source->getValue('category_id'),
+                    'path' => $source->getValue('path')
+                  );
+                  $msg = rex_editArticle($source->getId(), $data['clang'], $reorderdata);
+                  unset($reorderdata);
+                }
+                else {
+                  $msg = rex_moveArticle($source->getId(), $source->getCategoryId(), $data['dest_cat']);
+                }
+                
+                
+                if ($msg)
                 {
-                  rex_generateArticle($source->getId());
+                  foreach(OOArticle::getArticlesOfCategory($data['dest_cat']) as $id) {
+                    rex_generateArticle($id);
+                  }
+                  unset($id);
                   $messages[] = $I18N->msg('content_articlemoved');
                   $source = OOArticle::getArticleById($source->getId());
                 }
@@ -1120,9 +1215,25 @@ class treestructure {
             {
               if($REX['USER']->isAdmin() || ($REX['USER']->hasPerm('moveCategory[]') && $REX['USER']->hasCategoryPerm($source->getValue('re_id')) && $REX['USER']->hasCategoryPerm($data['dest_cat'])))
               {
-                if(rex_moveCategory($source->getId(), $data['dest_cat']))
+                if($source->getParentId() == $data['dest_cat']) {
+                  $reorderdata = array(
+                    'catprior' => $data['dest_after']==0 ? 1 : ((int) OOCategory::getCategoryById($data['dest_after'],$data['clang'])->getValue('catprior'))+1,
+                    'catname' => $source->getValue('catname'),
+                    'path' => $source->getValue('path')
+                  );
+                  $msg = rex_editCategory($source->getId(), $data['clang'], $reorderdata);
+                  unset($reorderdata);
+                }
+                else {
+                  $msg = rex_moveCategory($source->getId(), $data['dest_cat']);
+                }
+                
+                if($msg)
                 {
-                  rex_generateArticle($source->getId());
+                  foreach(OOCategory::getChildrenById($data['dest_cat']) as $id) {
+                    rex_generateArticle($id);
+                  }
+                  unset($id);
                   $messages[] = $I18N->msg('category_moved');
                   $source = OOCategory::getCategoryById($source->getId());
                 }
@@ -1509,4 +1620,3 @@ class treestructure {
     return $return;
   }
 }
-?>

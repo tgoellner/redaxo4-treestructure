@@ -7,7 +7,7 @@
  *
  *
  * @package redaxo4
- * @version 1.0.3
+ * @version 1.1
  */
 
 function rex_treestructure_cssjs_add($params)
@@ -15,7 +15,7 @@ function rex_treestructure_cssjs_add($params)
   if(rex_request('page','string',false)==='structure')
   {
     global $REX;
-    $params['subject'].=  "\n".'<script type="text/javascript" src="../files/addons/treestructure/jquery-ui.min.js"></script>'."\n";
+   #  $params['subject'].=  "\n".'<script type="text/javascript" src="../files/addons/treestructure/jquery-ui.min.js"></script>'."\n";
     $params['subject'].=  "\n".'<script type="text/javascript" src="../files/addons/treestructure/scripts.js"></script>'."\n";
     if(OOPlugin::isAvailable('be_style','simplerex')) {
       $params['subject'].=  '<link rel="stylesheet" href="../files/addons/treestructure/simplerex/simplerex.css" type="text/css" media="screen, projection, print" />'."\n";

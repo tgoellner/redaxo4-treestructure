@@ -1,9 +1,9 @@
-REDAXO TreeStructure PlugIn for Redaxo 4.3 / 4.4
+REDAXO TreeStructure PlugIn for Redaxo 4.3 / 4.4 / 4.5
 
 post@thomasgoellner.de / Thomas Göllner
 www.thomasgoellner.de
 
-Version: 1.0.3 (2012/12/19)
+Version: 1.1 (2013/10/15)
 
 
 If you experience performance problems with large sitemap you can either disable
@@ -50,11 +50,15 @@ To attach the icon to any category with the template 3 use:
 
 CHANGELOG
 -------------------------------------------------
-1.0.3 (2012/12/19):
+1.1 (2013/10/15):
 
-_ Path is now saved correctly when editing articles and categories
+_ fixed the PATH bug when editing a title of an article or category
 
-_ minor changes
+_ fixed the PRIOR bug - when moving an article or category the article was
+not updated so strange behaviours occurred when changing the order
+
+_ inserted a QUICKJUMP.TXT file which allows to put quick links to addon or article pages
+directly on top of the structure page
 
 
 1.0.2 (2012/09/13):

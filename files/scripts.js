@@ -6,7 +6,7 @@
  *
  *
  * @package redaxo4
- * @version 1.0.3
+ * @version 1.1
  */
 
 (function($){

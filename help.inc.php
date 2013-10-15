@@ -1,1 +1,1 @@
-REDAXO TreeStructure AddOn
+REDAXO Göllner-Treeview-Theme

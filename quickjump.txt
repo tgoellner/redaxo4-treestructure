@@ -1,0 +1,16 @@
+# Mit diesem File lassen sich in der Strukturansicht Schnellzugriffslinks platzieren,
+# im Grunde einfach die einzelnen URL-Parameter durch Kommata getrennt und als
+# Key/Value-Paar einfügen.
+#
+# Bspw.: Direktlink zu Artikel #12:
+# page:content,article_id:12
+#
+# Bspw.: Direktlink zu Artikel #12 mit dem Titel 'News-Artikel bearbeiten'
+# page:content,article_id:12,title:News-Artikel bearbeiten
+#
+# Bspw. Direktlink zum Eventkalender-Plugin des AddOns Admintools
+#page:admintools,plugin:eventcalendar,subpage:plugin_eventcalendar,title:translate:admintools_eventcalendar_edit_events
+#
+# Bspw. Direktlink zum Eventkalender-Plugin des AddOns Admintools, Anlegen eines neuen Termins:
+#page:admintools,plugin:eventcalendar,subpage:plugin_eventcalendar,func:add,title:translate:admintools_eventcalendar_add_event
+#

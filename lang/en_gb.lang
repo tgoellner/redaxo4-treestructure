@@ -1,0 +1,13 @@
+treestructure_root = Root
+treestructure_article_position = Position
+treestructure_set_item_to_bottom = Insert as last element
+treestructure_set_item_before = Insert before »{0}«
+treestructure_error = An error occurred.
+treestructure_error_no_such_function = The action you selected does not exist.
+treestructure_del_cat_success = Category »{0}« has been deleted.
+treestructure_del_art_success = Article »{0}« has been deleted.
+treestructure_notfoundarticle = Not found article
+treestructure_sitestartarticle = Website start article
+treestructure_metafields = Metafields
+treestructure_article_id = (ID: {0})
+treestructure_article_time = (Date: {0})

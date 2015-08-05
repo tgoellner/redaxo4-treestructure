@@ -501,7 +501,6 @@ class treestructure {
       $status_class = $this->catStatusTypes[$cat['status']][1];
       $this->initCategoryTemplates($cat['id']);
 
-
       if ($this->hasCatPerm($cat['id'])) {
         if(!$REX['USER']->hasPerm('editContentOnly[]'))
           $actions[] = '<a class="rex-i-element rex-i-category-add" href="'.$this->getActionUrl($cat,'add_cat').'"'. rex_accesskey($I18N->msg('add_category'), $REX['ACKEY']['ADD']) .'><span class="rex-i-element-text">'.$I18N->msg("add_category").'</span></a>';
@@ -1029,7 +1028,7 @@ class treestructure {
 
       if(isset($data['category_id']))
         $data['category_id']   = _rex_cast_var($data['category_id'], 'rex-category-id', false, '');
-
+      
     if(substr($func,0,5)!='move_' && !empty($data['article_id']) && !empty($data['clang']) && is_object($art = OOArticle::getArticleById($data['article_id'],$data['clang']))) {
       $data['path'] = $art->getValue('path');
     }
@@ -1197,7 +1196,6 @@ class treestructure {
             }
           }
           unset($destcat);
-              
           if($valid && $move) {
             global $I18N;
 
@@ -1207,7 +1205,6 @@ class treestructure {
               if($REX['USER']->isAdmin() || ($REX['USER']->hasPerm('moveArticle[]') && $REX['USER']->hasCategoryPerm($data['dest_cat'])))
               {
                 // just move?
-                
 /*
                 if($source->getCategoryId() == $data['dest_cat']) {
                   $reorderdata = array(
@@ -1259,7 +1256,6 @@ class treestructure {
                     rex_generateArticle($article->getId());
                   }
                   unset($articles,$article);
-                  
                   $messages[] = $I18N->msg('content_articlemoved');
                   $source = OOArticle::getArticleById($source->getId());
                 }
@@ -1300,7 +1296,6 @@ class treestructure {
                     rex_generateArticle($article->getId());
                   }
                   unset($articles,$article);
-                  
                   $messages[] = $I18N->msg('category_moved');
                   $source = OOCategory::getCategoryById($source->getId());
                 }
@@ -1320,7 +1315,6 @@ class treestructure {
 
           if($valid)
           {
-
             // change prior...
             $prior = 9999999999;
             if(intval($data['dest_after'])==0)

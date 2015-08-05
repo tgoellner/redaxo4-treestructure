@@ -7,13 +7,13 @@
  *
  *
  * @package redaxo4
- * @version 1.2
+ * @version 1.3
  */
 
 
 $REX['ADDON']['rxid']['treestructure'] = 'xxx';
 $REX['ADDON']['perm']['treestructure'] = 'treestructure[]';
-$REX['ADDON']['version']['treestructure'] = "1.2";
+$REX['ADDON']['version']['treestructure'] = "1.3";
 $REX['ADDON']['author']['treestructure'] = "Thomas Göllner";
 $REX['ADDON']['supportpage']['treestructure'] = 'forum.redaxo.de';
 $REX['PERM'][] = 'treestructure[]';

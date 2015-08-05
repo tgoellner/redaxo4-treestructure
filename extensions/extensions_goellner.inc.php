@@ -7,7 +7,7 @@
  *
  *
  * @package redaxo4
- * @version 1.2
+ * @version 1.3
  */
 
 function rex_treestructure_cssjs_add($params)

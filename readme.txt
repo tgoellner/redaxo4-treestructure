@@ -1,4 +1,4 @@
-REDAXO TreeStructure PlugIn for Redaxo 4.3 / 4.4 / 4.5
+REDAXO TreeStructure PlugIn for Redaxo 4.3 / 4.4 / 4.5 / 4.6
 
 post@thomasgoellner.de / Thomas Göllner
 www.thomasgoellner.de
@@ -50,9 +50,15 @@ To attach the icon to any category with the template 3 use:
 
 CHANGELOG
 -------------------------------------------------
+1.3 (2015/08/06):
+
+_ added REX 4.6.1 support
+
+
 1.2 (2013/10/17):
 
 _ fixed the prior bug when resorting and moving articles and categories
+
 
 1.1 (2013/10/15):
 

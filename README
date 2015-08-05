@@ -1,3 +1,3 @@
-REDAXO TreeStructure PlugIn for Redaxo 4.3 / 4.4
+REDAXO TreeStructure PlugIn for Redaxo 4.3 / 4.4 / 4.5 / 4.6
 
 This AddOn replaces the default structure page of Redaxo with a tree view. It enables you to drag and drop categories and articles and opens any edit or add dialogue in a lightbox window. Each request is submitted vie AJAX. It also fixes the misunderstanding between categories and start-articles as there are only categories and articles.
